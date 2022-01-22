@@ -6,4 +6,4 @@ app.use(express.json());
 // Route
 app.use("/postAssignment", require("./api/postAssignment"));
 
-app.listen(4000, () => console.log("Server is running"));
+app.listen(8000, () => console.log("Server is running"));
