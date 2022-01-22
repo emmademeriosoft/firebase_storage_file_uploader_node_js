@@ -27,7 +27,7 @@ router.post("/", upload.single("order_files[]"), async (req, res) => {
         });
 
 
-        res.json(`${timeStamp}-${req.file.originalname}`);
+        res.send(`${timeStamp}-${req.file.originalname}`);
     } catch (err) {
         console.log(err);
     }
@@ -47,7 +47,7 @@ router.delete('/', async (req, res) => {
         // Set to true if you need the website to include cookies in the requests sent
         // to the API (e.g. in case you use sessions)
         res.setHeader('Access-Control-Allow-Credentials', true);
-        const storage = await storageRef.file("assignments/" + JSON.parse(req.query.fileName)).delete();
+        const storage = await storageRef.file("assignments/" + req.query.fileName).delete();
 
         res.json(true);
     } catch (err) {
