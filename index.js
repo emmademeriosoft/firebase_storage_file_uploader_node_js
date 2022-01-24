@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
 const cors = require('cors')
-app.options('*', cors()) 
+app.options('*', cors())
 app.use(express.json());
 // Route
 app.use("/postAssignment", require("./api/postAssignment"));
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 app.listen(port, () => console.log("Server is running"));
