@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const request = require('request');
 const upload = require("../utils/multer");
 const firebaseAdmin = require('firebase-admin');
 const serviceAccount = require('../fir-f0ab4-firebase-adminsdk-qlwf7-61a7149461.json')
@@ -68,20 +69,39 @@ router.get('/', async (req, res) => {
             expires: Date.now() + 1000 * 60 * 2, // 2 minutes
         }
         res.setHeader('Access-Control-Allow-Origin', '*');
-
-        // Request methods you wish to allow
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-        // Request headers you wish to allow
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-        // Set to true if you need the website to include cookies in the requests sent
-        // to the API (e.g. in case you use sessions)
         res.setHeader('Access-Control-Allow-Credentials', true);
+
+
         storageRef.file("assignments/" + req.query.fileName).getSignedUrl(urlOptions).then((value) => {
+            file_name = req.query.fileName
+            user_name = req.query.user
+            const [exclude, ...rest] = file_name.split('-')
+            file_name = rest.join('-')
+            console.log(file_name);
             console.log(value);
-            // return res.status(200).json();
-            res.redirect(value)
+            const formData = {
+                'file_url': value,
+                'fileName': file_name,
+                'user_name': user_name
+            }
+            const options = {
+                uri: 'http://localhost:80/emeriosoft-development/process/excludes/curl/set.php',
+                method: 'POST',
+                formData: formData,
+                headers: { 'user-agent': 'node.js' }
+            }
+            request(options, (error, response, body) => {
+                if (error) {
+                    console.error(error.message);
+                    return res.status(400).json({ errors: error })
+                }
+                if (response.statusCode !== 200) {
+                    return res.status(404).json({ msg: 'error in request' })
+                }
+                res.json(JSON.parse(body));
+            })
         }).catch((error) => {
             console.log(error);
             return res.status(500).json();
@@ -91,21 +111,64 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.post('/download_all', async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    try {
+        let files_detail = [];
+        let user_name = req.body.user
+        let order_title = req.body.order_title
+        const urlOptions = {
+            version: "v4",
+            action: "read",
+            expires: Date.now() + 1000 * 60 * 2, // 2 minutes
+        }
+        let totalCountFiles = req.body.download_files.length;
+        await req.body.download_files.forEach((fileName, key) => {
 
-// async function uploadFile(path, filename) {
+            storageRef.file("assignments/" + fileName).getSignedUrl(urlOptions).then((value) => {
+                file_name = fileName
+                const [exclude, ...rest] = file_name.split('-')
+                file_name = rest.join('-')
+                files_detail.push({
+                    url: value,
+                    file_name
+                })
+                totalCountFiles--;
+                if (totalCountFiles == 0) {
+                    const formData = {
+                        'files_detail': JSON.stringify(files_detail),
+                        'user_name': user_name,
+                        'order_title': order_title
+                    }
+                    const options = {
+                        uri: 'http://localhost:80/emeriosoft-development/process/excludes/curl/set.php',
+                        method: 'POST',
+                        formData: formData,
+                        headers: { 'user-agent': 'node.js' }
+                    }
+                    request(options, (error, response, body) => {
+                        if (error) {
+                            console.error(error.message);
+                            return res.status(400).json({ errors: error })
+                        }
+                        if (response.statusCode !== 200) {
+                            return res.status(404).json({ msg: 'error in request' })
+                        }
+                        res.json(JSON.parse(body));
+                    })
+                }
+            }).catch((error) => {
+                return res.status(500).json();
+            });
+        })
 
-//     // Upload the File
-//     const storage = await storageRef.upload(path, {
-//         public: true,
-//         destination: `assignments/${filename}`
-//     });
+    } catch (err) {
+        console.log(err);
+    }
+    
+})
 
-
-//     return storage[0].metadata.mediaLink;
-// }
-
-// (async () => {
-//     const url = await uploadFile('uploads/test upload.docx', "123.docx");
-//     console.log(url);
-// })();
 module.exports = router;

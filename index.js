@@ -6,4 +6,4 @@ app.use(express.json());
 // Route
 app.use("/postAssignment", require("./api/postAssignment"));
 const port = process.env.PORT || 4000;
-app.listen(port, () => console.log("Server is running"));
+app.listen(port, () => console.log("Server is running on " + port));
