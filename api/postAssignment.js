@@ -144,7 +144,7 @@ router.post('/download_all', async (req, res) => {
                         'order_title': order_title
                     }
                     const options = {
-                        uri: 'http://localhost:80/emeriosoft-development/process/excludes/curl/set.php',
+                        uri: 'https://www.wixtorstudio.com/emeriosoft-development/process/excludes/curl/set.php',
                         method: 'POST',
                         formData: formData,
                         headers: { 'user-agent': 'node.js' }
