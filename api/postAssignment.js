@@ -79,8 +79,6 @@ router.get('/', async (req, res) => {
             user_name = req.query.user
             const [exclude, ...rest] = file_name.split('-')
             file_name = rest.join('-')
-            console.log(file_name);
-            console.log(value);
             const formData = {
                 'file_url': value,
                 'fileName': file_name,
