@@ -143,7 +143,7 @@ router.post('/download_all', async (req, res) => {
                         'order_title': order_title
                     }
                     const options = {
-                        uri: req.get('origin')+'/process/excludes/curl/set.php',
+                        uri: req.get('origin')+'/portal/process/excludes/curl/set.php',
                         method: 'POST',
                         formData: formData,
                         headers: { 'user-agent': 'node.js' }
