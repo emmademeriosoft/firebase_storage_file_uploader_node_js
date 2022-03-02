@@ -90,6 +90,7 @@ router.get('/', async (req, res) => {
                 formData: formData,
                 headers: { 'user-agent': 'node.js' }
             }
+            console.log(options)
             request(options, (error, response, body) => {
                 if (error) {
                     console.error(error.message);
@@ -147,6 +148,7 @@ router.post('/download_all', async (req, res) => {
                         formData: formData,
                         headers: { 'user-agent': 'node.js' }
                     }
+                    console.log(options)
                     request(options, (error, response, body) => {
                         if (error) {
                             console.error(error.message);
