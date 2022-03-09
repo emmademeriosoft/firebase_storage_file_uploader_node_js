@@ -85,12 +85,11 @@ router.get('/', async (req, res) => {
                 'user_name': user_name
             }
             const options = {
-                uri: 'https://firebase-storage-file-uploader.herokuapp.com/'+req.get('origin') + '/emeriosoft-development/process/excludes/curl/set.php',
+                uri: req.get('origin') + '/emeriosoft-development/process/excludes/curl/set.php',
                 method: 'POST',
                 formData: formData,
                 headers: { 'user-agent': 'node.js' }
             }
-            console.log(options)
             request(options, (error, response, body) => {
                 if (error) {
                     console.error(error.message);
@@ -143,12 +142,11 @@ router.post('/download_all', async (req, res) => {
                         'order_title': order_title
                     }
                     const options = {
-                        uri: 'https://firebase-storage-file-uploader.herokuapp.com/'+req.get('origin') + '/emeriosoft-development/process/excludes/curl/set.php',
+                        uri: req.get('origin') + '/emeriosoft-development/process/excludes/curl/set.php',
                         method: 'POST',
                         formData: formData,
                         headers: { 'user-agent': 'node.js' }
                     }
-                    console.log(options)
                     request(options, (error, response, body) => {
                         if (error) {
                             console.error(error.message);
