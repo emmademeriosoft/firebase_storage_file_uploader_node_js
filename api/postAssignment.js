@@ -10,17 +10,17 @@ const storageRef = admin.storage().bucket(`gs://fir-f0ab4.appspot.com`);
 router.post("/", upload.single("order_files[]"), async (req, res) => {
     try {
         // Upload the File
-        res.setHeader('Access-Control-Allow-Origin', '*');
+        // res.setHeader('Access-Control-Allow-Origin', '*');
 
-        // Request methods you wish to allow
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+        // // Request methods you wish to allow
+        // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-        // Request headers you wish to allow
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        // // Request headers you wish to allow
+        // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
-        // Set to true if you need the website to include cookies in the requests sent
-        // to the API (e.g. in case you use sessions)
-        res.setHeader('Access-Control-Allow-Credentials', true);
+        // // Set to true if you need the website to include cookies in the requests sent
+        // // to the API (e.g. in case you use sessions)
+        // res.setHeader('Access-Control-Allow-Credentials', true);
         const timeStamp = Date.now();
         const storage = await storageRef.upload(req.file.path, {
             public: true,
@@ -37,17 +37,17 @@ router.post("/", upload.single("order_files[]"), async (req, res) => {
 router.delete('/', async (req, res) => {
     // Employee.findByIdAndDelete(req.query.fileName)
     try {
-        res.setHeader('Access-Control-Allow-Origin', '*');
+        // res.setHeader('Access-Control-Allow-Origin', '*');
 
-        // Request methods you wish to allow
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+        // // Request methods you wish to allow
+        // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-        // Request headers you wish to allow
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        // // Request headers you wish to allow
+        // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
-        // Set to true if you need the website to include cookies in the requests sent
-        // to the API (e.g. in case you use sessions)
-        res.setHeader('Access-Control-Allow-Credentials', true);
+        // // Set to true if you need the website to include cookies in the requests sent
+        // // to the API (e.g. in case you use sessions)
+        // res.setHeader('Access-Control-Allow-Credentials', true);
         const storage = await storageRef.file("assignments/" + req.query.fileName).delete();
 
         res.json(true);
@@ -68,10 +68,10 @@ router.get('/', async (req, res) => {
             action: "read",
             expires: Date.now() + 1000 * 60 * 2, // 2 minutes
         }
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        res.setHeader('Access-Control-Allow-Credentials', true);
+        // res.setHeader('Access-Control-Allow-Origin', '*');
+        // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+        // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        // res.setHeader('Access-Control-Allow-Credentials', true);
 
 
         storageRef.file("assignments/" + req.query.fileName).getSignedUrl(urlOptions).then((value) => {
@@ -85,12 +85,11 @@ router.get('/', async (req, res) => {
                 'user_name': user_name
             }
             const options = {
-                uri: req.get('origin')+'/portal/process/excludes/curl/set.php',
+                uri: req.get('origin') + '/emeriosoft-development/process/excludes/curl/set.php',
                 method: 'POST',
                 formData: formData,
                 headers: { 'user-agent': 'node.js' }
             }
-            console.log(options)
             request(options, (error, response, body) => {
                 if (error) {
                     console.error(error.message);
@@ -111,10 +110,10 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/download_all', async (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
+    // res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // res.setHeader('Access-Control-Allow-Credentials', true);
     try {
         let files_detail = [];
         let user_name = req.body.user
@@ -143,12 +142,11 @@ router.post('/download_all', async (req, res) => {
                         'order_title': order_title
                     }
                     const options = {
-                        uri: req.get('origin')+'/portal/process/excludes/curl/set.php',
+                        uri: req.get('origin') + '/emeriosoft-development/process/excludes/curl/set.php',
                         method: 'POST',
                         formData: formData,
                         headers: { 'user-agent': 'node.js' }
                     }
-                    console.log(options)
                     request(options, (error, response, body) => {
                         if (error) {
                             console.error(error.message);
@@ -168,7 +166,7 @@ router.post('/download_all', async (req, res) => {
     } catch (err) {
         console.log(err);
     }
-    
+
 })
 
 module.exports = router;
