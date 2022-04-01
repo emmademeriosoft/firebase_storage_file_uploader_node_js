@@ -24,11 +24,11 @@ router.post("/", upload.single("order_files[]"), async (req, res) => {
         const timeStamp = Date.now();
         const storage = await storageRef.upload(req.file.path, {
             public: true,
-            destination: `assignments/${timeStamp}-${req.file.originalname.replace(/[^a-zA-Z. ]/g, "")}`
+            destination: `assignments/${timeStamp}-${req.file.originalname.replace(/[%'"]/g, "")}`
         });
 
 
-        res.send(`${timeStamp}-${req.file.originalname.replace(/%/g, "")}`);
+        res.send(`${timeStamp}-${req.file.originalname.replace(/[%'"]/g, "")}`);
     } catch (err) {
         console.log(err);
     }
@@ -85,7 +85,7 @@ router.get('/', async (req, res) => {
                 'user_name': user_name
             }
             const options = {
-                uri: req.get('origin') + '/emeriosoft-development/process/excludes/curl/set.php',
+                uri: req.get('origin') + '/portal/process/excludes/curl/set.php',
                 method: 'POST',
                 formData: formData,
                 headers: { 'user-agent': 'node.js' }
