@@ -24,11 +24,11 @@ router.post("/", upload.single("order_files[]"), async (req, res) => {
         const timeStamp = Date.now();
         const storage = await storageRef.upload(req.file.path, {
             public: true,
-            destination: `assignments/${timeStamp}-${req.file.originalname.replace(/[%'"]/g, "")}`
+            destination: `assignments/${timeStamp}-${req.file.originalname.replace(/[%'+$!?=]/g, "")}`
         });
 
 
-        res.send(`${timeStamp}-${req.file.originalname.replace(/[%'"]/g, "")}`);
+        res.send(`${timeStamp}-${req.file.originalname.replace(/[%'+$!?=]/g, "")}`);
     } catch (err) {
         console.log(err);
     }
