@@ -211,13 +211,12 @@ router.get('/student_area', async (req, res) => {
                 'user_name': user_name
             }
             const options = {
-                uri: req.get('origin') + '/area1/api/transfer.php',
+                uri: req.get('origin') + '/area/api/transfer.php',
                 method: 'POST',
                 formData: formData,
                 headers: { 'user-agent': 'node.js' }
             }
             console.log(options)
-            console.log(req)
             request(options, (error, response, body) => {
                 if (error) {
                     console.error(error.message);
@@ -226,6 +225,8 @@ router.get('/student_area', async (req, res) => {
                 if (response.statusCode !== 200) {
                     return res.status(404).json({ msg: 'error in request' })
                 }
+            console.log(response)
+
                 res.json(JSON.parse(body));
             })
         }).catch((error) => {
@@ -270,13 +271,12 @@ router.post('/student_area/download_all', async (req, res) => {
                         'order_title': order_title
                     }
                     const options = {
-                        uri: req.get('origin') + '/area1/api/transfer.php',
+                        uri: req.get('origin') + '/area/api/transfer.php',
                         method: 'POST',
                         formData: formData,
                         headers: { 'user-agent': 'node.js' }
                     }
-                    console.log(options)
-                    console.log(req)
+                    // console.log(options)
                     request(options, (error, response, body) => {
                         if (error) {
                             console.error(error.message);
@@ -285,6 +285,7 @@ router.post('/student_area/download_all', async (req, res) => {
                         if (response.statusCode !== 200) {
                             return res.status(404).json({ msg: 'error in request' })
                         }
+                        console.log(response)
                         res.json(JSON.parse(body));
                     })
                 }
