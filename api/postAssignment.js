@@ -77,8 +77,8 @@ router.get('/', async (req, res) => {
         storageRef.file("assignments/" + req.query.fileName).getSignedUrl(urlOptions).then((value) => {
             file_name = req.query.fileName
             user_name = req.query.user
-            const [exclude, ...rest] = file_name.split('-')
-            file_name = rest.join('-')
+            // const [exclude, ...rest] = file_name.split('-')
+            // file_name = rest.join('-')
             const formData = {
                 'file_url': value,
                 'fileName': file_name,
@@ -90,8 +90,6 @@ router.get('/', async (req, res) => {
                 formData: formData,
                 headers: { 'user-agent': 'node.js' }
             }
-            console.log(options)
-            console.log(req)
             request(options, (error, response, body) => {
                 if (error) {
                     console.error(error.message);
@@ -130,8 +128,8 @@ router.post('/download_all', async (req, res) => {
 
             storageRef.file("assignments/" + fileName).getSignedUrl(urlOptions).then((value) => {
                 file_name = fileName
-                const [exclude, ...rest] = file_name.split('-')
-                file_name = rest.join('-')
+                // const [exclude, ...rest] = file_name.split('-')
+                // file_name = rest.join('-')
                 files_detail.push({
                     url: value,
                     file_name
